@@ -27,12 +27,12 @@
                     <td class="py-2 px-4 border-b">Rp {{ number_format($tagihan->total_tagihan, 2, ',', '.') }}</td>
                     <td class="py-2 px-4 border-b">
                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
-                            {{ $tagihan->status_tagihan == 'Lunas' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                            {{ $tagihan->status_tagihan == 'Sudah Dibayar' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
                             {{ $tagihan->status_tagihan }}
                         </span>
                     </td>
                     <td class="py-2 px-4 border-b text-center">
-                        @if($tagihan->status_tagihan == 'Lunas' && $tagihan->pembayaran)
+                        @if($tagihan->status_tagihan == 'Sudah Dibayar' && $tagihan->pembayaran)
                             <button onclick="showPaymentDetail(
                                 '{{ $tagihan->pembayaran->tanggal_pembayaran->format('d M Y') }}',
                                 'Rp {{ number_format($tagihan->total_tagihan, 2, ',', '.') }}',
