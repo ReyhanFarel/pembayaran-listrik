@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user', function (Blueprint $table) {
+        Schema::create('users', function (Blueprint $table) {
             $table->id(); // Kolom 'id' sebagai primary key
             $table->string('nama_user', 100);
             $table->string('username', 50)->unique();

@@ -10,12 +10,12 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    protected $table = 'user'; // Pastikan nama tabel benar
+    protected $table = 'users'; // Pastikan nama tabel benar
     protected $fillable = [
         'nama_user',
         'username',
         'password',
-        'id_level',
+        'level_id',
     ];
 
     protected $hidden = [
@@ -24,11 +24,11 @@ class User extends Authenticatable
 
     public function level()
     {
-        return $this->belongsTo(Level::class, 'id_level', 'id');
+        return $this->belongsTo(Level::class);
     }
 
     public function pembayaran()
     {
-        return $this->hasMany(Pembayaran::class, 'id_user', 'id');
+        return $this->hasMany(Pembayaran::class);
     }
 }

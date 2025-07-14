@@ -13,11 +13,12 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         $adminLevel = Level::where('nama_level', 'administrator')->first();
-        $pelangganLevel = Level::where('nama_level', 'pelanggan')->first();
+        $pelangganLevel = Level::where('nama_level', 'petugas')->first();
 
         User::firstOrCreate(
             ['username' => 'admin'],
             [
+                
                 'nama_user' => 'Administrator Utama',
                 'password' => Hash::make('password'), // Ganti dengan password yang kuat!
                 'level_id' => $adminLevel->id,
@@ -25,7 +26,7 @@ class UserSeeder extends Seeder
         );
 
         User::firstOrCreate(
-            ['username' => 'pelanggan1'],
+            ['username' => 'petugas'],
             [
                 'nama_user' => 'Udin Sedunia',
                 'password' => Hash::make('password'),

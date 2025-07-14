@@ -11,6 +11,6 @@ class LevelSeeder extends Seeder
     public function run(): void
     {
         Level::firstOrCreate(['nama_level' => 'administrator']);
-        Level::firstOrCreate(['nama_level' => 'pelanggan']);
+        Level::firstOrCreate(['nama_level' => 'petugas']);
     }
 }

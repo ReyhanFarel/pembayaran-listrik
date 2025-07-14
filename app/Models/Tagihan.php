@@ -9,31 +9,52 @@ class Tagihan extends Model
 {
     use HasFactory;
 
-    protected $table = 'tagihan'; // Pastikan nama tabel benar
+    protected $table = 'tagihan';
     protected $fillable = [
-        'id_penggunaan',
+        'penggunaan_id',
+        'pelanggan_id',
         'jumlah_meter',
-        'bulan', // Tambahkan 'bulan' dan 'tahun' ke fillable
+        'bulan',
         'tahun',
         'status_tagihan',
     ];
 
-    // Pastikan casting jika 'bulan' dan 'tahun' disimpan sebagai tipe data non-string/non-integer
-    protected $casts = [
-        'bulan' => 'string',
-        'tahun' => 'integer',
-    ];
+    // Hapus cast untuk 'jumlah_bayar'
+    // protected $casts = [
+    //     'jumlah_bayar' => 'decimal:2',
+    // ];
 
     public function penggunaan()
     {
         return $this->belongsTo(Penggunaan::class);
     }
- public function pelanggan() // Relasi baru ke pelanggan
+
+    public function pelanggan()
     {
         return $this->belongsTo(Pelanggan::class);
     }
+
+    // Relasi ke Pembayaran (penting untuk fitur ini)
     public function pembayaran()
     {
         return $this->hasOne(Pembayaran::class);
+    }
+
+    // Accessor untuk mendapatkan objek Tarif melalui relasi pelanggan
+    public function getTarifDataAttribute()
+    {
+        return optional($this->pelanggan)->tarif;
+    }
+
+    // Accessor untuk menghitung total tagihan secara dinamis
+    public function getTotalTagihanAttribute()
+    {
+        $tarifPerKwh = optional($this->pelanggan->tarifs)->tarif_perkwh;
+
+        if ($tarifPerKwh === null) {
+            return 0;
+        }
+
+        return $this->jumlah_meter * $tarifPerKwh;
     }
 }

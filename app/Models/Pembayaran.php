@@ -4,18 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Pembayaran extends Model
 {
     use HasFactory;
 
-    protected $table = 'pembayaran';
-
+    protected $table = 'pembayaran'; // Pastikan nama tabel benar
     protected $fillable = [
         'tagihan_id',
         'pelanggan_id',
-        'user_id',
+        'user_id', // Admin/Petugas yang mencatat pembayaran
         'tanggal_pembayaran',
         'biaya_admin',
         'total_bayar',
@@ -27,18 +25,21 @@ class Pembayaran extends Model
         'total_bayar' => 'decimal:2',
     ];
 
-    public function tagihan(): BelongsTo
+    // Relasi ke Model Tagihan
+    public function tagihan()
     {
-        return $this->belongsTo(Tagihan::class); // foreign key 'tagihan_id' di tabel 'pembayaran'
+        return $this->belongsTo(Tagihan::class);
     }
 
-    public function pelanggan(): BelongsTo
+    // Relasi ke Model Pelanggan
+    public function pelanggan()
     {
-        return $this->belongsTo(Pelanggan::class); // foreign key 'pelanggan_id' di tabel 'pembayaran'
+        return $this->belongsTo(Pelanggan::class);
     }
 
-    public function user(): BelongsTo
+    // Relasi ke Model User (Admin/Petugas yang mencatat)
+    public function user()
     {
-        return $this->belongsTo(User::class); // foreign key 'user_id' di tabel 'pembayaran'
+        return $this->belongsTo(User::class);
     }
 }
