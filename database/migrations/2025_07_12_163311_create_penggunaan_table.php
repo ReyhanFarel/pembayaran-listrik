@@ -16,7 +16,8 @@ return new class extends Migration
             $table->integer('meter_awal');
             $table->integer('meter_akhir');
             $table->timestamps();
-
+ // Tambahkan unique constraint agar satu pelanggan hanya punya satu record penggunaan per bulan/tahun
+            $table->unique(['pelanggan_id', 'bulan', 'tahun']);
             $table->index(['pelanggan_id', 'bulan', 'tahun']); // Indeks untuk performa
         });
     }

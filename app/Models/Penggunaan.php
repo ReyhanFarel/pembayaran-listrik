@@ -30,4 +30,8 @@ class Penggunaan extends Model
     {
         return $this->hasOne(Tagihan::class); // foreign key 'penggunaan_id' di tabel 'tagihan'
     }
+     public function getJumlahMeterAttribute()
+    {
+        return $this->meter_akhir - $this->meter_awal;
+    }
 }

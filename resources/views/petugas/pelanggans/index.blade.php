@@ -28,8 +28,8 @@
                     <td class="py-2 px-4 border-b">{{ $pelanggan->alamat }}</td>
                     <td class="py-2 px-4 border-b">{{ $pelanggan->nomor_kwh }}</td> {{-- <-- Tampilkan nomor_kwh --}}
                     <td class="py-2 px-4 border-b">
-                        @if($pelanggan->tarif)
-                            {{ number_format($pelanggan->tarif->daya, 0, ',', '.') }} VA (Rp {{ number_format($pelanggan->tarif->tarif_perkwh, 2, ',', '.') }}/kWh)
+                        @if($pelanggan->tarifs)
+                            {{ number_format($pelanggan->tarifs->daya, 0, ',', '.') }} VA (Rp {{ number_format($pelanggan->tarifs->tarif_perkwh, 2, ',', '.') }}/kWh)
                         @else
                             N/A
                         @endif
