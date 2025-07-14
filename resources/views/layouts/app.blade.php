@@ -47,7 +47,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="flex items-center px-4 py-2 rounded-md hover:bg-gray-700 mb-2">
+                            <a href={{ route("admin.pelanggans.index") }} class="flex items-center px-4 py-2 rounded-md hover:bg-gray-700 mb-2">
                                 <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20v-9H7v9M4 14h16V7H4v7"></path></svg>
                                 <span class="whitespace-nowrap">Manajemen Pelanggan</span>
                             </a>

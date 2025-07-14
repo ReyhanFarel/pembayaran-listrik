@@ -1,10 +1,12 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\UserAuthController;
+use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\TarifController;
 use App\Http\Middleware\AdminMiddleware;   // Import AdminMiddleware
 use App\Http\Middleware\PetugasMiddleware; // Import PetugasMiddleware
+use Illuminate\Support\Facades\Route;
+
 
 
 // Route untuk login tunggal (user/pelanggan)
@@ -18,8 +20,9 @@ Route::middleware(['auth:web', AdminMiddleware::class])->prefix('admin')->name('
         return view('admin.dashboard');
     })->name('dashboard');
 
-    // Rute-rute untuk Manajemen Tarif (Admin bisa CRUD)
+    // Rute-rute untuk Manajemen  (Admin bisa CRUD)
     Route::resource('tarifs', TarifController::class);
+    Route::resource('pelanggans', PelangganController::class);
 });
 
 // Grup Route untuk Petugas
@@ -31,6 +34,7 @@ Route::middleware(['auth:web', PetugasMiddleware::class])->prefix('petugas')->na
     // Rute-rute untuk Manajemen Tarif (Petugas hanya bisa Read: index, show)
     // Note: 'show' di sini akan redirect ke index karena tidak ada view show terpisah.
     Route::resource('tarifs', TarifController::class)->only(['index', 'show']);
+    Route::resource('pelanggans', PelangganController::class)->only(['index', 'show']); // <-- Tambahkan ini
 });
 
 // Grup Route untuk Pelanggan
