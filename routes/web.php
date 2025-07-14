@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\UserAuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PelangganController;
+use App\Http\Controllers\PelangganDashboardController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PenggunaanController;
 use App\Http\Controllers\TagihanController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Middleware\AdminMiddleware;   // Import AdminMiddleware
 use App\Http\Middleware\PetugasMiddleware; // Import PetugasMiddleware
 use Illuminate\Support\Facades\Route;
+
 
 
 
@@ -71,10 +73,13 @@ Route::middleware(['auth:web', PetugasMiddleware::class])->prefix('petugas')->na
 
 // Grup Route untuk Pelanggan
 Route::middleware(['auth:pelanggan'])->prefix('pelanggan')->name('pelanggan.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('pelanggan.dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [PelangganDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/riwayat-penggunaan', [PelangganDashboardController::class, 'riwayatPenggunaan'])->name('riwayat_penggunaan');
+    Route::get('/tagihan-saya', [PelangganDashboardController::class, 'tagihanSaya'])->name('tagihan_saya');
+
+    
 });
+
 
 // Halaman utama akan langsung redirect ke login
 Route::get('/', function () {

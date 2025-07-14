@@ -119,26 +119,26 @@
                     @endif
 
                     {{-- Menu untuk Pelanggan --}}
-                    @if(Auth::guard('pelanggan')->check())
-                        <li>
-                            <a href="{{ route('pelanggan.dashboard') }}" class="flex items-center px-4 py-2 rounded-md hover:bg-gray-700 mb-2">
-                                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m0 0l7 7m-1.5-7.5V14m0 0v-4.5m0 0V8m0 0V6.5m0 0H8"></path></svg>
-                                <span class="whitespace-nowrap">Dashboard Pelanggan</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="flex items-center px-4 py-2 rounded-md hover:bg-gray-700 mb-2">
-                                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h10a2 2 0 002-2V8m-5 8l-5-5m0 0l5-5m-5 5h17"></path></svg>
-                                <span class="whitespace-nowrap">Tagihan Saya</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="flex items-center px-4 py-2 rounded-md hover:bg-gray-700 mb-2">
-                                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                                <span class="whitespace-nowrap">Riwayat Penggunaan</span>
-                            </a>
-                        </li>
-                    @endif
+                  @if(Auth::guard('pelanggan')->check())
+    <li>
+        <a href="{{ route('pelanggan.dashboard') }}" class="flex items-center px-4 py-2 rounded-md hover:bg-gray-700 mb-2">
+            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m0 0l7 7m-1.5-7.5V14m0 0v-4.5m0 0V8m0 0V6.5m0 0H8"></path></svg>
+            <span class="whitespace-nowrap">Dashboard Pelanggan</span>
+        </a>
+    </li>
+    <li>
+        <a href="{{ route('pelanggan.riwayat_penggunaan') }}" class="flex items-center px-4 py-2 rounded-md hover:bg-gray-700 mb-2">
+            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+            <span class="whitespace-nowrap">Riwayat Penggunaan</span>
+        </a>
+    </li>
+    <li>
+        <a href="{{ route('pelanggan.tagihan_saya') }}" class="flex items-center px-4 py-2 rounded-md hover:bg-gray-700 mb-2">
+            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h10a2 2 0 002-2V8m-5 8l-5-5m0 0l5-5m-5 5h17"></path></svg>
+            <span class="whitespace-nowrap">Tagihan Saya</span>
+        </a>
+    </li>
+@endif
                 </ul>
             </nav>
         </div>
