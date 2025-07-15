@@ -17,6 +17,7 @@ class TagihanController extends Controller
      */
     public function index()
     {
+        
         $tagihans = Tagihan::with(['pelanggan.tarifs', 'penggunaan'])
                             ->orderBy('tahun', 'desc')
                             ->orderBy('bulan', 'desc')

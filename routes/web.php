@@ -76,8 +76,11 @@ Route::middleware(['auth:pelanggan'])->prefix('pelanggan')->name('pelanggan.')->
     Route::get('/dashboard', [PelangganDashboardController::class, 'index'])->name('dashboard');
     Route::get('/riwayat-penggunaan', [PelangganDashboardController::class, 'riwayatPenggunaan'])->name('riwayat_penggunaan');
     Route::get('/tagihan-saya', [PelangganDashboardController::class, 'tagihanSaya'])->name('tagihan_saya');
-
-    
+// Rute untuk Profil Saya
+    Route::get('/profil', [PelangganDashboardController::class, 'profilSaya'])->name('profil_saya'); // Tampilkan form
+    Route::put('/profil', [PelangganDashboardController::class, 'updateProfil'])->name('update_profil'); // Proses update
+     // Rute baru untuk Riwayat Pembayaran
+    Route::get('/riwayat-pembayaran', [PelangganDashboardController::class, 'riwayatPembayaran'])->name('riwayat_pembayaran');
 });
 
 
