@@ -48,26 +48,6 @@ class PelangganDashboardController extends Controller
             return redirect()->route('login')->with('error', 'Anda harus login sebagai pelanggan.');
         }
 
-        // Jika ada parameter success_id, update status tagihan & buat pembayaran
-        if ($request->has('success_id')) {
-            $tagihan = Tagihan::where('id', $request->success_id)
-                ->where('pelanggan_id', $pelanggan->id)
-                ->first();
-            if ($tagihan && $tagihan->status_tagihan != 'Sudah Dibayar') {
-                $tagihan->update(['status_tagihan' => 'Sudah Dibayar']);
-                if (!$tagihan->pembayaran) {
-                    Pembayaran::create([
-                        'tagihan_id' => $tagihan->id,
-                        'pelanggan_id' => $tagihan->pelanggan_id,
-                        'user_id' => null,
-                        'tanggal_pembayaran' => now(),
-                        'biaya_admin' => 1000,
-                        'total_bayar' => $tagihan->total_tagihan,
-                    ]);
-                }
-            }
-        }
-
         $query = Tagihan::where('pelanggan_id', $pelanggan->id);
             
 

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\UserAuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MidtransController;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\PelangganDashboardController;
 use App\Http\Controllers\PembayaranController;
@@ -21,12 +22,14 @@ use Illuminate\Support\Facades\Route;
 
 
 
+Route::withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class])
+    ->post('/midtrans/callback', [\App\Http\Controllers\MidtransController::class, 'handleNotification']);
+
+
 // Route untuk login tunggal (user/pelanggan)
 Route::get('/login', [UserAuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [UserAuthController::class, 'login']);
 Route::post('/logout', [UserAuthController::class, 'logout'])->name('logout');
-// === CALLBACK MIDTRANS (Di Luar Grup) ===
-// Route::post('/midtrans/callback', [PembayaranController::class, 'midtransCallback']); //nanti diaktifkan jika menggunakan punya hosting sendiri
 // Grup Route untuk Admin
 Route::middleware(['auth:web', AdminMiddleware::class])->prefix('admin')->name('admin.')->group(function () {
  // Ubah rute dashboard Admin untuk menunjuk ke DashboardController
