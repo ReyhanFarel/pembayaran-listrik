@@ -30,8 +30,8 @@
         <div class="mb-6">
             <label for="status_tagihan" class="block text-gray-700 text-sm font-bold mb-2">Status Tagihan:</label>
             <select id="status_tagihan" name="status_tagihan" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('status_tagihan') border-red-500 @enderror" required>
-                <option value="Belum Lunas" {{ old('status_tagihan', $tagihan->status_tagihan) == 'Belum Lunas' ? 'selected' : '' }}>Belum Lunas</option>
-                <option value="Lunas" {{ old('status_tagihan', $tagihan->status_tagihan) == 'Lunas' ? 'selected' : '' }}>Lunas</option>
+                <option value="Belum Dibayar" {{ old('status_tagihan', $tagihan->status_tagihan) == 'Belum Dibayar' ? 'selected' : '' }}>Belum Dibayar</option>
+                <option value="Sudah Dibayar" {{ old('status_tagihan', $tagihan->status_tagihan) == 'Sudah Dibayar' ? 'selected' : '' }}>Sudah Dibayar</option>
             </select>
             @error('status_tagihan')
                 <p class="text-red-500 text-xs italic mt-2">{{ $message }}</p>

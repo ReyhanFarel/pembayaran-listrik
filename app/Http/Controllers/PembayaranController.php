@@ -8,6 +8,7 @@ use App\Models\Pelanggan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class PembayaranController extends Controller
 {
@@ -173,4 +174,61 @@ class PembayaranController extends Controller
             return redirect()->route(Auth::guard('web')->user()->level_id == 1 ? 'admin.pembayarans.index' : 'petugas.pembayarans.index')->with('error', 'Terjadi kesalahan saat menghapus pembayaran: ' . $e->getMessage());
         }
     }
+
+//    public function midtransCallback(Request $request)
+// {
+//     // Konfigurasi Midtrans
+//     \Midtrans\Config::$serverKey = config('midtrans.server_key');
+//     \Midtrans\Config::$isProduction = config('midtrans.is_production', false);
+
+//     // Ambil data json dari Midtrans
+//     $notif = new \Midtrans\Notification();
+
+//     // Debug log untuk cek callback masuk
+//     Log::info('Midtrans Callback Received', [
+//         'order_id' => $notif->order_id,
+//         'transaction_status' => $notif->transaction_status,
+//         'fraud_status' => $notif->fraud_status,
+//         'gross_amount' => $notif->gross_amount
+//     ]);
+
+//     $order_id = $notif->order_id;
+//     $transaction_status = $notif->transaction_status;
+//     $fraud_status = $notif->fraud_status;
+//     $gross_amount = $notif->gross_amount;
+
+//     // Ambil id tagihan dari order_id (misal: order_id = TAGIHAN-12-1623456789)
+//     $parts = explode('-', $order_id);
+//     $tagihan_id = $parts[1] ?? null;
+
+//     // Validasi tagihan ditemukan
+//     $tagihan = \App\Models\Tagihan::find($tagihan_id);
+
+//     if ($transaction_status == 'capture' || $transaction_status == 'settlement') {
+//         if ($tagihan && $tagihan->status_tagihan != 'Sudah Dibayar') {
+//             $tagihan->status_tagihan = 'Sudah Dibayar';
+//             $tagihan->save();
+
+//             // Cek dulu sudah ada data pembayaran untuk tagihan ini?
+//             if (!$tagihan->pembayaran) {
+//                 \App\Models\Pembayaran::create([
+//                     'tagihan_id' => $tagihan->id,
+//                     'pelanggan_id' => $tagihan->pelanggan_id,
+//                     'user_id' => null, // pembayaran dari pelanggan sendiri
+//                     'tanggal_pembayaran' => now(),
+//                     'biaya_admin' => 0,
+//                     'total_bayar' => $gross_amount,
+//                 ]);
+//             }
+//         }
+//     }
+
+//     // Log jika gagal update
+//     if (!$tagihan) {
+//         Log::warning('Midtrans Callback: Tagihan tidak ditemukan untuk order_id ' . $order_id);
+//     }
+
+//     // Return 200 OK agar Midtrans tidak mengulang callback
+//     return response()->json(['message' => 'ok']);
+// }
 }

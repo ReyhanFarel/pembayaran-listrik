@@ -56,7 +56,7 @@
                     <td class="py-2 px-4 border-b">Rp {{ number_format($pembayaran->biaya_admin, 2, ',', '.') }}</td>
                     <td class="py-2 px-4 border-b">Rp {{ number_format($pembayaran->total_bayar, 2, ',', '.') }}</td>
                     <td class="py-2 px-4 border-b">{{ $pembayaran->tanggal_pembayaran->format('d M Y') }}</td>
-                    <td class="py-2 px-4 border-b">{{ $pembayaran->user->nama_user ?? 'N/A' }}</td>
+                    <td class="py-2 px-4 border-b">{{ $pembayaran->user->nama_user ?? 'Dibayar Oleh Pelanggan' }}</td>
                     <td class="py-2 px-4 border-b text-center">
                         @if(Auth::guard('web')->user()->level_id == 1)
                             <a href="{{ route('admin.pembayarans.edit', $pembayaran->id) }}" class="bg-yellow-500 hover:bg-yellow-700 text-white text-sm py-1 px-3 rounded-md mr-2">Edit</a>

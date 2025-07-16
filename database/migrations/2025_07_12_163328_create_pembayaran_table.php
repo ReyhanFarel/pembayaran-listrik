@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id(); // Primary key 'id'
             $table->foreignId('tagihan_id')->constrained('tagihan')->onDelete('cascade'); // Foreign key ke tabel 'tagihan'
             $table->foreignId('pelanggan_id')->constrained('pelanggan')->onDelete('cascade'); // Foreign key ke tabel 'pelanggan'
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Foreign key ke tabel 'user' (siapa yang membayar)
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade'); // Foreign key ke tabel 'user' (siapa yang membayar)
             $table->date('tanggal_pembayaran');
             $table->decimal('biaya_admin', 12, 2)->default(0.00);
             $table->decimal('total_bayar', 12, 2); // Total pembayaran termasuk biaya admin

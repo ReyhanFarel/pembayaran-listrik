@@ -25,7 +25,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/login', [UserAuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [UserAuthController::class, 'login']);
 Route::post('/logout', [UserAuthController::class, 'logout'])->name('logout');
-
+// === CALLBACK MIDTRANS (Di Luar Grup) ===
+// Route::post('/midtrans/callback', [PembayaranController::class, 'midtransCallback']); //nanti diaktifkan jika menggunakan punya hosting sendiri
 // Grup Route untuk Admin
 Route::middleware(['auth:web', AdminMiddleware::class])->prefix('admin')->name('admin.')->group(function () {
  // Ubah rute dashboard Admin untuk menunjuk ke DashboardController
@@ -73,6 +74,7 @@ Route::middleware(['auth:web', PetugasMiddleware::class])->prefix('petugas')->na
 
 // Grup Route untuk Pelanggan
 Route::middleware(['auth:pelanggan'])->prefix('pelanggan')->name('pelanggan.')->group(function () {
+
     Route::get('/dashboard', [PelangganDashboardController::class, 'index'])->name('dashboard');
     Route::get('/riwayat-penggunaan', [PelangganDashboardController::class, 'riwayatPenggunaan'])->name('riwayat_penggunaan');
     Route::get('/tagihan-saya', [PelangganDashboardController::class, 'tagihanSaya'])->name('tagihan_saya');
@@ -80,6 +82,8 @@ Route::middleware(['auth:pelanggan'])->prefix('pelanggan')->name('pelanggan.')->
     Route::get('/profil', [PelangganDashboardController::class, 'profilSaya'])->name('profil_saya'); // Tampilkan form
     Route::put('/profil', [PelangganDashboardController::class, 'updateProfil'])->name('update_profil'); // Proses update
      // Rute baru untuk Riwayat Pembayaran
+     Route::post('/tagihan/{id}/bayar', [PelangganDashboardController::class, 'bayarTagihan'])
+     ->name('bayar_tagihan');
     Route::get('/riwayat-pembayaran', [PelangganDashboardController::class, 'riwayatPembayaran'])->name('riwayat_pembayaran');
 });
 
