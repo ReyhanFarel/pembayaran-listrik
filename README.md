@@ -1,61 +1,132 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Aplikasi Pembayaran Listrik Pascabayar
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplikasi ini adalah sistem manajemen pembayaran listrik pascabayar berbasis web yang dibangun dengan Laravel 11. Aplikasi ini menyediakan antarmuka bagi Administrator, Petugas, dan Pelanggan untuk mengelola data penggunaan, tagihan, dan pembayaran listrik.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Fitur Utama
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+-   **Autentikasi & Otorisasi**: Login terpadu untuk Admin/Petugas dan Pelanggan dengan pembagian hak akses (privilege).
+-   **Manajemen Master Data**: Pelanggan, Tarif, User (Admin & Petugas).
+-   **Manajemen Transaksi**: Penggunaan Listrik per bulan, Tagihan Listrik, Pembayaran (termasuk integrasi Midtrans untuk pembayaran oleh pelanggan).
+-   **Dashboard Interaktif**: Ringkasan data untuk Admin, Petugas, dan Pelanggan.
+-   **Riwayat & Profil Pelanggan**: Pelanggan dapat melihat riwayat penggunaan, tagihan, pembayaran, dan mengelola profil pribadi.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## Persyaratan Sistem
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+-   PHP >= 8.2
+-   Composer
+-   Node.js & npm (untuk Tailwind CSS)
+-   Database MySQL / MariaDB
+-   Web Server (Apache/Nginx) atau menggunakan `php artisan serve`
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Instalasi dan Setup Proyek
 
-## Laravel Sponsors
+Ikuti langkah-langkah di bawah ini untuk menjalankan proyek di lingkungan lokal Anda.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+1.  **Clone Repositori:**
 
-### Premium Partners
+    ```bash
+    git clone [URL_REPOSITORI_ANDA]
+    cd [nama_folder_proyek_anda]
+    ```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+2.  **Instal Dependensi Composer:**
 
-## Contributing
+    ```bash
+    composer install
+    ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+3.  **Konfigurasi Environment (.env):**
 
-## Code of Conduct
+    -   Duplikasi file `.env.example` menjadi `.env`:
+        ```bash
+        cp .env.example .env
+        ```
+    -   Edit file `.env` dan sesuaikan pengaturan database dan Midtrans:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+        ```env
+        APP_NAME="Pembayaran Listrik"
+        APP_ENV=local
+        APP_KEY= # Akan digenerate di langkah selanjutnya
 
-## Security Vulnerabilities
+        DB_CONNECTION=mysql
+        DB_HOST=127.00.0.1
+        DB_PORT=3306
+        DB_DATABASE=pembayaran_listrik # Ganti dengan nama database Anda
+        DB_USERNAME=root # Ganti dengan username database Anda
+        DB_PASSWORD= # Ganti dengan password database Anda
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+        MIDTRANS_SERVER_KEY="YOUR_SERVER_KEY_FROM_MIDTRANS_DASHBOARD"
+        MIDTRANS_CLIENT_KEY="YOUR_CLIENT_KEY_FROM_MIDTRANS_DASHBOARD"
+        MIDTRANS_IS_PRODUCTION=false # Set true jika di production
+        ```
 
-## License
+4.  **Generate Application Key:**
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+    ```bash
+    php artisan key:generate
+    ```
+
+5.  **Jalankan Migrasi Database:**
+
+    -   Ini akan membuat semua tabel database yang diperlukan.
+
+    ```bash
+    php artisan migrate
+    ```
+
+    -   **Catatan:** Jika Anda ingin menghapus semua tabel yang ada dan memulai bersih:
+        ```bash
+        php artisan migrate:fresh
+        ```
+
+6.  **Jalankan Seeder (Opsional, untuk data awal):**
+
+    -   Jika Anda memiliki seeder untuk Level, User, atau data dummy lainnya.
+
+    ```bash
+    php artisan db:seed # Ini akan menjalankan DatabaseSeeder
+    # Atau jika Anda memiliki seeder spesifik (contoh: LevelSeeder)
+    php artisan db:seed --class=LevelSeeder
+    # Atau buat user admin pertama secara manual di DB atau seeder Anda
+    ```
+
+    _Pastikan Anda punya user Admin (`level_id=1`) dan Petugas (`level_id=2`) untuk pengujian._
+
+7.  **Instal Dependensi Node.js & Compile Assets (Tailwind CSS):**
+
+    ```bash
+    npm install
+    npm run dev # Untuk pengembangan
+    # npm run build # Untuk produksi
+    ```
+
+8.  **Jalankan Aplikasi:**
+    ```bash
+    php artisan serve
+    ```
+    Akses aplikasi di browser Anda, biasanya di `http://127.0.0.1:8000`.
+
+---
+
+## Pengujian Fitur Dasar
+
+-   **Login Admin:** Gunakan kredensial user dengan `level_id=1`.
+-   **Login Petugas:** Gunakan kredensial user dengan `level_id=2`.
+-   **Login Pelanggan:** Gunakan kredensial dari tabel `pelanggan`.
+
+---
+
+## Konfigurasi Midtrans
+
+-   Pastikan `MIDTRANS_SERVER_KEY` dan `MIDTRANS_CLIENT_KEY` di `.env` sudah diisi dengan kunci Sandbox (untuk testing).
+-   Di Dashboard Sandbox Midtrans Anda, atur **URL Notifikasi (Webhook)** ke:
+    `http://[URL_APLIKASI_ANDA]/midtrans/callback`
+    (Contoh: `http://localhost:8000/midtrans/callback`). Jika di localhost, gunakan **Ngrok** untuk mendapatkan URL publik.
+
+---
