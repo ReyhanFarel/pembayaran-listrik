@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use Faker\Provider\ar_EG\Person;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Testing\Fluent\Concerns\Has;
 
 /**
  * 
@@ -40,6 +42,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  */
 class Pelanggan extends Authenticatable
 {
+    use HasFactory;
     protected $table = 'pelanggan';
     protected $fillable = ['nama_pelanggan', 'username', 'password', 'alamat', 'nomor_kwh', 'tarif_id'];
     protected $hidden = ['password'];
