@@ -59,18 +59,18 @@ Route::middleware(['auth:web', PetugasMiddleware::class])->prefix('petugas')->na
     Route::get('/dashboard', [DashboardController::class, 'petugasDashboard'])->name('dashboard');
 
     // Rute-rute untuk Manajemen Tarif (Petugas hanya bisa Read: index, show)
-    Route::resource('tarifs', TarifController::class)->only(['index', 'show']);
+    Route::resource('tarifs', TarifController::class);
     // Rute-rute untuk Manajemen Penggunaan (Petugas bisa CRUD)
     Route::resource('penggunaans', PenggunaanController::class);
     // Rute-rute untuk Manajemen Pelanggan (Petugas hanya bisa Read: index, show)
-    Route::resource('pelanggans', PelangganController::class)->only(['index', 'show']); 
+    Route::resource('pelanggans', PelangganController::class);
    
     // Rute-rute untuk Manajemen Tagihan
     Route::get('tagihans/generate', [TagihanController::class, 'createFromPenggunaan'])->name('tagihans.create_from_penggunaan');
     Route::post('tagihans/generate', [TagihanController::class, 'generate'])->name('tagihans.generate');
     Route::resource('tagihans', TagihanController::class);
     
-    // Rute-rute untuk Manajemen Pembayaran (Admin bisa CRUD)
+    // Rute-rute untuk Manajemen Pembayaran (Petugas bisa CRUD)
     Route::resource('pembayarans', PembayaranController::class); 
 
 });

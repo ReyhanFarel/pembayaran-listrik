@@ -118,25 +118,25 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
-    {
-        // Mencegah Admin menghapus dirinya sendiri
-        if (Auth::guard('web')->id() == $user->id) {
-            return back()->with('error', 'Anda tidak dapat menghapus akun Anda sendiri.');
-        }
-
-        // Mencegah Admin menghapus Admin lain jika hanya ada satu Admin tersisa (opsional, untuk keamanan ekstra)
-        $adminCount = User::where('level_id', 1)->count();
-        if ($user->level_id == 1 && $adminCount <= 1) {
-            return back()->with('error', 'Tidak dapat menghapus admin terakhir. Setidaknya harus ada satu akun admin.');
-        }
-
-        try {
-            $user->delete();
-            return redirect()->route('admin.users.index')->with('success', 'User berhasil dihapus!');
-        } catch (\Illuminate\Database\QueryException $e) {
-            // Tangani error jika ada foreign key constraint (misal: user mencatat pembayaran)
-            return back()->with('error', 'Tidak dapat menghapus user ini karena memiliki data terkait (misalnya, pembayaran yang dicatat).');
-        }
+   public function destroy(User $user)
+{
+    // Mencegah Admin menghapus Admin lain jika hanya ada satu Admin tersisa
+    $adminCount = User::where('level_id', 1)->count();
+    if ($user->level_id == 1 && $adminCount <= 1) {
+        return back()->with('error', 'Tidak dapat menghapus admin terakhir. Setidaknya harus ada satu akun admin.');
     }
+
+    // Mencegah Admin menghapus dirinya sendiri
+    if (Auth::guard('web')->id() == $user->id) {
+        return back()->with('error', 'Anda tidak dapat menghapus akun Anda sendiri.');
+    }
+
+    try {
+        $user->delete();
+        return redirect()->route('admin.users.index')->with('success', 'User berhasil dihapus!');
+    } catch (\Illuminate\Database\QueryException $e) {
+        return back()->with('error', 'Tidak dapat menghapus user ini karena memiliki data terkait (misalnya, pembayaran yang dicatat).');
+    }
+}
+
 }
