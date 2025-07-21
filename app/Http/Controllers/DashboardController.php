@@ -17,6 +17,7 @@ class DashboardController extends Controller
     public function adminDashboard()
     {
         $totalPelanggan = Pelanggan::count();
+        
         $totalTagihanBelumLunas = Tagihan::where('status_tagihan', 'Belum Dibayar')->count();
         $totalPembayaranBulanIni = Pembayaran::whereMonth('tanggal_pembayaran', now()->month)
                                             ->whereYear('tanggal_pembayaran', now()->year)
