@@ -15,7 +15,7 @@ class PelangganController extends Controller
      */
     public function index()
     {
-        $pelanggans = Pelanggan::with('tarifs')->orderBy('nama_pelanggan')->get();
+        $pelanggans = Pelanggan::with('tarifs')->orderBy('nama_pelanggan')->paginate(10) ;
    
         if (Auth::guard('web')->check() && Auth::guard('web')->user()->level_id == 1) { // Admin
             return view('admin.pelanggans.index', compact('pelanggans'));

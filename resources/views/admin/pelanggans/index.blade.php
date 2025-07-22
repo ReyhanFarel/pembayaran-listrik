@@ -3,70 +3,104 @@
 @section('title', 'Manajemen Pelanggan Admin')
 
 @section('content')
-<div class="bg-white p-6 rounded-lg shadow-md">
-    <h1 class="text-3xl font-bold text-gray-800 mb-6">Daftar Pelanggan (Admin)</h1>
+    <style>
+        /* Custom Neo-Brutalism Shadows - ensure these are defined if not coming from layouts.app */
+        .neo-brutal-shadow-black {
+            box-shadow: 8px 8px 0px 0px rgba(0, 0, 0, 1);
+            /* Black shadow */
+        }
 
-    @if(session('success'))
-        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
-            <span class="block sm:inline">{{ session('success') }}</span>
+        .neo-brutal-button-shadow {
+            box-shadow: 6px 6px 0px 0px rgba(0, 0, 0, 1);
+            /* Black shadow for buttons */
+        }
+    </style>
+    <div class="bg-white p-8 rounded-none border-4 border-neutral-900 neo-brutal-shadow-black">
+        <h1 class="text-4xl font-extrabold text-neutral-900 mb-8 uppercase">Daftar Pelanggan (Admin)</h1>
+
+        @if (session('success'))
+            <div class="bg-green-600 text-white px-4 py-3 rounded-none border-2 border-neutral-900 neo-brutal-shadow-black relative mb-6"
+                role="alert">
+                <span class="block sm:inline">{{ session('success') }}</span>
+            </div>
+        @endif
+        @if (session('error'))
+            <div class="bg-red-600 text-white px-4 py-3 rounded-none border-2 border-neutral-900 neo-brutal-shadow-black relative mb-6"
+                role="alert">
+                <span class="block sm:inline">{{ session('error') }}</span>
+            </div>
+        @endif
+
+        <div class="mb-6 text-right">
+            <a href="{{ route('admin.pelanggans.create') }}"
+                class="inline-block bg-sky-500 hover:bg-sky-600 text-neutral-900 font-extrabold py-3 px-6 rounded-none border-2 border-neutral-900 neo-brutal-button-shadow transition duration-200 ease-in-out transform hover:-translate-y-1 uppercase">
+                Tambah Pelanggan Baru
+            </a>
         </div>
-    @endif
-    @if(session('error'))
-        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
-            <span class="block sm:inline">{{ session('error') }}</span>
+
+        <div class="overflow-x-auto border-4 border-neutral-900 neo-brutal-shadow-black">
+            <table class="min-w-full bg-white">
+                <thead>
+                    <tr>
+                        <th
+                            class="py-4 px-4 border-b-4 border-neutral-900 bg-sky-300 text-left text-black font-extrabold uppercase">
+                            Nama Pelanggan</th>
+                        <th
+                            class="py-4 px-4 border-b-4 border-neutral-900 bg-sky-300 text-left text-black font-extrabold uppercase">
+                            Username</th>
+                        <th
+                            class="py-4 px-4 border-b-4 border-neutral-900 bg-sky-300 text-left text-black font-extrabold uppercase">
+                            Alamat</th>
+                        <th
+                            class="py-4 px-4 border-b-4 border-neutral-900 bg-sky-300 text-left text-black font-extrabold uppercase">
+                            No. KWH</th>
+                        <th
+                            class="py-4 px-4 border-b-4 border-neutral-900 bg-sky-300 text-left text-black font-extrabold uppercase">
+                            Daya/Tarif</th>
+                        <th
+                            class="py-4 px-4 border-b-4 border-neutral-900 bg-sky-300 text-center text-black font-extrabold uppercase">
+                            Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($pelanggans as $pelanggan)
+                        <tr class="border-b-2 border-neutral-200 hover:bg-sky-50 transition duration-150 ease-in-out">
+                            <td class="py-3 px-4 text-neutral-900">{{ $pelanggan->nama_pelanggan }}</td>
+                            <td class="py-3 px-4 text-neutral-900">{{ $pelanggan->username }}</td>
+                            <td class="py-3 px-4 text-neutral-900">{{ $pelanggan->alamat }}</td>
+                            <td class="py-3 px-4 text-neutral-900">{{ $pelanggan->nomor_kwh }}</td>
+                            <td class="py-3 px-4 text-neutral-900">
+                                @if ($pelanggan->tarifs)
+                                    {{ number_format($pelanggan->tarifs->daya, 0, ',', '.') }} VA (Rp
+                                    {{ number_format($pelanggan->tarifs->tarif_perkwh, 2, ',', '.') }}/kWh)
+                                @else
+                                    N/A
+                                @endif
+                            </td>
+                            <td class="py-3 px-4 text-center">
+                                <a href="{{ route('admin.pelanggans.edit', $pelanggan->id) }}"
+                                    class="inline-block bg-yellow-500 hover:bg-yellow-600 text-white text-sm font-bold py-2 px-4 rounded-none border-2 border-neutral-900 neo-brutal-button-shadow mr-3 transition duration-200 ease-in-out transform hover:-translate-y-1">Edit</a>
+                                <form action="{{ route('admin.pelanggans.destroy', $pelanggan->id) }}" method="POST"
+                                    class="inline-block"
+                                    onsubmit="return confirm('Apakah Anda yakin ingin menghapus pelanggan ini?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                        class="bg-red-600 hover:bg-red-700 text-white text-sm font-bold py-2 px-4 rounded-none border-2 border-neutral-900 neo-brutal-button-shadow transition duration-200 ease-in-out transform hover:-translate-y-1">Hapus</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="6" class="py-6 px-4 text-center text-neutral-500 text-lg italic">Belum ada data
+                                pelanggan.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
-    @endif
-
-    <div class="mb-4 text-right">
-        <a href="{{ route('admin.pelanggans.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-            Tambah Pelanggan Baru
-        </a>
+        <div class="mt-8">
+            {{ $pelanggans->links() }}
+        </div>
     </div>
-
-    <div class="overflow-x-auto">
-        <table class="min-w-full bg-white border border-gray-200">
-            <thead>
-                <tr>
-                   
-                    <th class="py-2 px-4 border-b text-left text-gray-600">Nama Pelanggan</th>
-                    <th class="py-2 px-4 border-b text-left text-gray-600">Username</th>
-                    <th class="py-2 px-4 border-b text-left text-gray-600">Alamat</th>
-                    <th class="py-2 px-4 border-b text-left text-gray-600">No. KWH</th> {{-- <-- Ganti Daya menjadi No. KWH --}}
-                    <th class="py-2 px-4 border-b text-left text-gray-600">Daya/Tarif</th> {{-- <-- Menampilkan Daya dari Tarif --}}
-                    <th class="py-2 px-4 border-b text-center text-gray-600">Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($pelanggans as $pelanggan)
-                <tr class="hover:bg-gray-50">
-                  
-                    <td class="py-2 px-4 border-b">{{ $pelanggan->nama_pelanggan }}</td>
-                    <td class="py-2 px-4 border-b">{{ $pelanggan->username }}</td>
-                    <td class="py-2 px-4 border-b">{{ $pelanggan->alamat }}</td>
-                    <td class="py-2 px-4 border-b">{{ $pelanggan->nomor_kwh }}</td> {{-- <-- Tampilkan nomor_kwh --}}
-                    <td class="py-2 px-4 border-b">
-                        @if($pelanggan->tarifs)
-                            {{ number_format($pelanggan->tarifs->daya, 0, ',', '.') }} VA (Rp {{ number_format($pelanggan->tarifs->tarif_perkwh, 2, ',', '.') }}/kWh)
-                        @else
-                            N/A
-                        @endif
-                    </td>
-                    <td class="py-2 px-4 border-b text-center">
-                        <a href="{{ route('admin.pelanggans.edit', $pelanggan->id) }}" class="bg-yellow-500 hover:bg-yellow-700 text-white text-sm py-1 px-3 rounded-md mr-2">Edit</a>
-                        <form action="{{ route('admin.pelanggans.destroy', $pelanggan->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Apakah Anda yakin ingin menghapus pelanggan ini?');">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="bg-red-500 hover:bg-red-700 text-white text-sm py-1 px-3 rounded-md">Hapus</button>
-                        </form>
-                    </td>
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="7" class="py-4 px-4 text-center text-gray-500">Belum ada data pelanggan.</td>
-                </tr>
-                @endforelse
-            </tbody>
-        </table>
-    </div>
-</div>
 @endsection

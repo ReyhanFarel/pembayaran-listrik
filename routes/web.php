@@ -25,11 +25,13 @@ use Illuminate\Support\Facades\Route;
 Route::withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class])
     ->post('/midtrans/callback', [\App\Http\Controllers\MidtransController::class, 'handleNotification']);
 
-
+Route::get('/register', [UserAuthController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [UserAuthController::class, 'register']);
 // Route untuk login tunggal (user/pelanggan)
 Route::get('/login', [UserAuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [UserAuthController::class, 'login']);
 Route::post('/logout', [UserAuthController::class, 'logout'])->name('logout');
+
 // Grup Route untuk Admin
 Route::middleware(['auth:web', AdminMiddleware::class])->prefix('admin')->name('admin.')->group(function () {
  // Ubah rute dashboard Admin untuk menunjuk ke DashboardController
