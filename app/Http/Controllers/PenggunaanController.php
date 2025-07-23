@@ -10,7 +10,10 @@ use Illuminate\Support\Facades\Auth;
 class PenggunaanController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Tampilkan daftar penggunaan listrik.
+     * Hanya Admin dan Petugas yang dapat mengaksesnya.
+     * @return \Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function index()
     {
@@ -26,7 +29,10 @@ class PenggunaanController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Tampilkan formulir untuk membuat penggunaan baru.
+     * Hanya Admin dan Petugas yang dapat mengaksesnya.
+     * @return \Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function create()
     {
@@ -36,7 +42,11 @@ class PenggunaanController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Simpan penggunaan baru ke database.
+     * Validasi input dan pastikan pelanggan_id ada di tabel 'pelanggan'.
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function store(Request $request)
     {
@@ -82,9 +92,7 @@ class PenggunaanController extends Controller
         return redirect()->route('petugas.penggunaans.index')->with('success', 'Data penggunaan berhasil ditambahkan!');
     }
 
-    /**
-     * Display the specified resource.
-     */
+   
     public function show(Penggunaan $penggunaan)
     {
         // Biasanya tidak diperlukan view show terpisah untuk CRUD sederhana
@@ -92,7 +100,11 @@ class PenggunaanController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Tampilkan formulir untuk mengedit penggunaan yang ada.
+     * Hanya Admin dan Petugas yang dapat mengaksesnya.
+     * @param Penggunaan $penggunaan
+     * @return \Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function edit(Penggunaan $penggunaan)
     {
@@ -101,7 +113,13 @@ class PenggunaanController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update Data penggunaan yang ada.
+     * Validasi input dan pastikan pelanggan_id ada di tabel 'pelanggan'.
+     * Cek apakah ada data penggunaan lain untuk pelanggan, bulan, dan tahun yang sama (kecuali dirinya sendiri).
+     * @param \Illuminate\Http\Request $request
+     * @param Penggunaan $penggunaan
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(Request $request, Penggunaan $penggunaan)
     {
@@ -148,7 +166,11 @@ class PenggunaanController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Hapus penggunaan yang ada.
+     * Hanya Admin dan Petugas yang dapat mengaksesnya.
+     * @param Penggunaan $penggunaan
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function destroy(Penggunaan $penggunaan)
     {

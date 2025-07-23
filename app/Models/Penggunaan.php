@@ -34,12 +34,33 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Penggunaan whereUpdatedAt($value)
  * @mixin \Eloquent
  */
+/**
+ * Model Penggunaan
+ *
+ * Model ini merepresentasikan tabel 'penggunaan' yang menyimpan data penggunaan listrik oleh pelanggan.
+ * Relasi:
+ * - Pelanggan: Setiap penggunaan terkait dengan satu pelanggan.
+ * - Tagihan: Setiap penggunaan dapat memiliki satu tagihan.
+ */
 class Penggunaan extends Model
 {
     use HasFactory;
 
+    /**
+     * Nama tabel yang digunakan oleh model ini.
+     * Diperlukan jika nama tabel tidak sesuai dengan konvensi Laravel.
+     *
+     * @var string
+     */
+    // Diperlukan karena nama tabel tidak sesuai dengan konvensi Laravel
     protected $table = 'penggunaan';
 
+    /**
+     * Atribut yang dapat diisi secara massal.
+     * Ini adalah atribut yang dapat diisi melalui metode seperti create() atau update().
+     *
+     * @var array
+     */
     protected $fillable = [
         'pelanggan_id',
         'bulan',
@@ -48,16 +69,37 @@ class Penggunaan extends Model
         'meter_akhir',
     ];
 
+    
+
+    /**
+     * Relasi ke Pelanggan
+     * Setiap penggunaan terkait dengan satu pelanggan.
+     *
+     * @return BelongsTo
+     */
     public function pelanggan(): BelongsTo
     {
         return $this->belongsTo(Pelanggan::class); // foreign key 'pelanggan_id' di tabel 'penggunaan'
     }
 
+    /**
+     * Relasi ke Tagihan
+     * Setiap penggunaan dapat memiliki satu tagihan.
+     *
+     * @return HasOne
+     */
     public function tagihan(): HasOne
     {
         return $this->hasOne(Tagihan::class); // foreign key 'penggunaan_id' di tabel 'tagihan'
     }
-     public function getJumlahMeterAttribute()
+
+    /**
+     * Accessor untuk menghitung jumlah meter yang digunakan.
+     * Ini akan mengembalikan selisih antara meter akhir dan meter awal.
+     *
+     * @return int
+     */
+    public function getJumlahMeterAttribute()
     {
         return $this->meter_akhir - $this->meter_awal;
     }

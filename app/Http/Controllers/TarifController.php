@@ -9,7 +9,10 @@ use Illuminate\Support\Facades\Auth; // Penting untuk cek level di controller
 class TarifController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Daftar tarif yang tersedia.
+     * Hanya Admin dan Petugas yang dapat mengaksesnya.
+     * @return \Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function index()
     {
@@ -28,7 +31,10 @@ class TarifController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Tampilkan formulir untuk membuat tarif baru.
+     * Hanya Admin yang dapat mengaksesnya.
+     * @return \Illuminate\View\View    
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function create()
     {
@@ -68,7 +74,11 @@ class TarifController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Tampilkan halaman untuk mengedit tarif yang ada.
+     * Hanya Admin yang dapat mengaksesnya.
+     * @param Tarif $tarif
+     * @return \Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function edit(Tarif $tarif)
     {
@@ -80,7 +90,13 @@ class TarifController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update Data tarif yang ada.
+     * Validasi input untuk memastikan daya unik dan tarif_perkwh valid.
+     * Hanya Admin yang dapat memperbarui tarif.
+     * @param \Illuminate\Http\Request $request
+     * @param Tarif $tarif
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(Request $request, Tarif $tarif)
     {
@@ -108,7 +124,11 @@ class TarifController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Hapus tarif yang ada.
+     * Hanya Admin yang dapat mengaksesnya.
+     * @param Tarif $tarif
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function destroy(Tarif $tarif)
     {

@@ -13,7 +13,10 @@ use Illuminate\Support\Facades\Log;
 class PembayaranController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Tampilkan daftar pembayaran.
+     * Hanya Admin dan Petugas yang dapat mengaksesnya.
+     * @return \Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function index()
     {
@@ -25,7 +28,10 @@ class PembayaranController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Tampilkan formulir untuk membuat pembayaran baru.
+     * Hanya Admin dan Petugas yang dapat mengaksesnya.
+     * @return \Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function create()
     {
@@ -40,7 +46,11 @@ class PembayaranController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Simpan pembayaran baru ke database.
+     * Validasi input dan pastikan tagihan_id ada di tabel 'tagihan'.
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function store(Request $request)
     {
@@ -96,16 +106,18 @@ class PembayaranController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
+    
     public function show(Pembayaran $pembayaran)
     {
         return redirect()->route(Auth::guard('web')->user()->level_id == 1 ? 'admin.pembayarans.index' : 'petugas.pembayarans.index');
     }
 
-    /**
-     * Show the form for editing the specified resource.
+   /**
+     * Tampilkan formulir untuk mengedit pembayaran yang ada.
+     * Hanya Admin dan Petugas yang dapat mengaksesnya.
+     * @param Pembayaran $pembayaran
+     * @return \Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function edit(Pembayaran $pembayaran)
     {
@@ -114,8 +126,14 @@ class PembayaranController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update Data pembayaran yang ada.
+     * Validasi input dan pastikan tanggal pembayaran tidak di masa depan.
+     * @param \Illuminate\Http\Request $request
+     * @param Pembayaran $pembayaran
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
+    
     public function update(Request $request, Pembayaran $pembayaran)
     {
         $validated = $request->validate([
@@ -132,7 +150,7 @@ class PembayaranController extends Controller
         DB::beginTransaction();
         try {
             $tagihan = $pembayaran->tagihan->load('pelanggan.tarifs');
-            $biayaAdmin = $validated['biaya_admin'] ?? 0;
+            $biayaAdmin = $validated['biaya_admin'] ?? 1000;// Default biaya admin jika tidak diisi
             $totalTagihan = $tagihan->total_tagihan;
             $totalBayar = $totalTagihan + $biayaAdmin;
 
@@ -152,7 +170,12 @@ class PembayaranController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Hapus pembayaran yang ada.
+     * Hanya Admin dan Petugas yang dapat mengaksesnya.
+     * @param Pembayaran $pembayaran
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws \Exception
      */
     public function destroy(Pembayaran $pembayaran)
     {
@@ -174,6 +197,5 @@ class PembayaranController extends Controller
             return redirect()->route(Auth::guard('web')->user()->level_id == 1 ? 'admin.pembayarans.index' : 'petugas.pembayarans.index')->with('error', 'Terjadi kesalahan saat menghapus pembayaran: ' . $e->getMessage());
         }
     }
-
 
 }

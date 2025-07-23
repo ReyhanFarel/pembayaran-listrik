@@ -33,7 +33,7 @@
         }
 
         .neo-brutal-logout-shadow {
-            box-shadow: 6px 6px 0px 0px rgba(14, 165, 233, 1);
+            box-shadow: 6px 6px 0px 0px rgb(5, 5, 5);
             /* Sky shadow for logout button */
         }
 
@@ -314,7 +314,7 @@
                                         d="M3 9.75L12 4l9 5.75M4.5 10.75V19a2 2 0 002 2h11a2 2 0 002-2v-8.25"></path>
                                 </svg>
                                 <span class="sidebar-text whitespace-nowrap overflow-hidden font-bold">Dashboard
-                                    Pelanggan</span>
+                                </span>
                             </a>
                         </li>
                         <li>
@@ -326,8 +326,8 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M3 17v-6a2 2 0 012-2h2a2 2 0 012 2v6m4-10v10m4-6v6"></path>
                                 </svg>
-                                <span class="sidebar-text whitespace-nowrap overflow-hidden font-bold">Riwayat
-                                    Penggunaan</span>
+                                <span class="sidebar-text whitespace-nowrap overflow-hidden font-bold">
+                                    Penggunaan Saya</span>
                             </a>
                         </li>
                         <li>
@@ -355,7 +355,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M6 20a6 6 0 0112 0"></path>
                                 </svg>
-                                <span class="sidebar-text whitespace-nowrap overflow-hidden font-bold">Profil
+                                <span class="sidebar-text whitespace-nowrap overflow-hidden font-bold ">Profil
                                     Saya</span>
                             </a>
                         </li>
@@ -363,13 +363,13 @@
                             <a href="{{ route('pelanggan.riwayat_pembayaran') }}"
                                 class="flex items-center px-4 py-3 rounded-md hover:bg-sky-400 hover:text-white mb-3 border-2 border-neutral-900 neo-brutal-button-shadow transition duration-200 ease-in-out transform hover:-translate-y-1">
                                 <!-- Heroicons Receipt Refund -->
-                                <svg class="w-6 h-6 mr-3 flex-shrink-0" fill="none" stroke="currentColor"
+                                <svg class="w-6 h-6 mr-3 flex-shrink-0 -mt-1" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M12 8v4l3 3m6 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
-                                <span class="sidebar-text whitespace-nowrap overflow-hidden font-bold">Riwayat
-                                    Pembayaran
+                                <span class="sidebar-text whitespace-nowrap overflow-hidden font-bold">
+                                    Pembayaran Saya
                                 </span>
                             </a>
                         </li>
@@ -383,7 +383,7 @@
             <form action="{{ route('logout') }}" method="POST">
                 @csrf
                 <button type="submit"
-                    class="w-full flex  px-4 py-3 rounded-md bg-neutral-900 hover:bg-neutral-700 text-sky-400 font-extrabold border-2 border-sky-400 neo-brutal-logout-shadow transition duration-200 ease-in-out transform hover:-translate-y-1">
+                    class="w-full flex  px-4 py-3 rounded-md bg-red-600 hover:bg-red-700 text-white font-extrabold border-2 border-red-600 hover:border-red-700 neo-brutal-logout-shadow transition duration-200 ease-in-out transform hover:-translate-y-1">
                     <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                         xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

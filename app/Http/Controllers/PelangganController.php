@@ -11,7 +11,9 @@ use Illuminate\Support\Facades\Auth;
 class PelangganController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Tampilkan daftar pelanggan.
+     * Hanya Admin dan Petugas yang dapat mengaksesnya.
+     * Admin dapat melihat semua pelanggan, Petugas hanya dapat melihat pelanggan.
      */
     public function index()
     {
@@ -26,7 +28,9 @@ class PelangganController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Tampilkan formulir untuk membuat pelanggan baru.
+     * Hanya Admin yang dapat mengaksesnya.
+     * Jika bukan Admin, akan mengembalikan error 403.
      */
     public function create()
     {
@@ -38,7 +42,10 @@ class PelangganController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Simpan pelanggan baru ke database.
+     * Validasi input dan pastikan tarif_id ada di tabel 'tarifs'.
+     * Hanya Admin yang dapat menyimpan pelanggan.
+     * Jika bukan Admin, akan mengembalikan error 403.
      */
     public function store(Request $request)
     {
@@ -76,7 +83,9 @@ class PelangganController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Tampilkan formulir untuk mengedit pelanggan yang ada.
+     * Hanya Admin yang dapat mengaksesnya.
+     * Jika bukan Admin, akan mengembalikan error 403.
      */
     public function edit(Pelanggan $pelanggan)
     {
@@ -88,7 +97,14 @@ class PelangganController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update Data pelanggan yang ada.
+     * Validasi input dan pastikan tarif_id ada di tabel 'tarifs'.
+     * Hanya Admin yang dapat memperbarui pelanggan.
+     * Jika bukan Admin, akan mengembalikan error 403.
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Pelanggan $pelanggan
+     * @return \Illuminate\Http\RedirectResponse
+     * 
      */
     public function update(Request $request, Pelanggan $pelanggan)
     {
@@ -134,7 +150,11 @@ class PelangganController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Hapus pelanggan yang ada.
+     * Hanya Admin yang dapat menghapus pelanggan.
+     * Jika bukan Admin, akan mengembalikan error 403.
+     * @param \App\Models\Pelanggan $pelanggan
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Pelanggan $pelanggan)
     {

@@ -36,11 +36,32 @@ use Illuminate\Notifications\Notifiable;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereUsername($value)
  * @mixin \Eloquent
  */
+/**
+ * Model User
+ *
+ * Model ini merepresentasikan tabel 'users' yang menyimpan data pengguna sistem.
+ * Relasi:
+ * - Level: Setiap pengguna memiliki satu level (Admin/Petugas).
+ * - Pembayaran: Setiap pengguna dapat mencatat banyak pembayaran.
+ */ 
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    protected $table = 'users'; // Pastikan nama tabel benar
+    /**
+     * Nama tabel yang digunakan oleh model ini.
+     * Pastikan nama tabel sesuai dengan yang ada di database.
+     * Jika nama tabel berbeda, Anda perlu mengubahnya di sini.
+     * 
+     * @var string
+     */
+    protected $table = 'users'; 
+    /**
+     * Atribut yang dapat diisi secara massal.
+     * Pastikan atribut ini sesuai dengan kolom yang ada di tabel 'users'.
+     * 
+     * @var array
+     */
     protected $fillable = [
         'nama_user',
         'username',
@@ -48,15 +69,34 @@ class User extends Authenticatable
         'level_id',
     ];
 
+    /**
+     * Atribut yang harus disembunyikan saat model diubah menjadi array atau JSON.
+     * Biasanya digunakan untuk menyembunyikan password dan token.
+     * 
+     * @var array
+     */
     protected $hidden = [
         'password',
     ];
 
+    /**
+     * Relasi ke Level
+     * Relasi ini menghubungkan model User dengan model Level.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function level()
     {
         return $this->belongsTo(Level::class);
     }
 
+    /**
+     * Relasi ke Pembayaran
+     * Relasi ini menghubungkan model User dengan model Pembayaran.
+     * Setiap Admin dan Petugas dapat mencatat banyak pembayaran.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function pembayaran()
     {
         return $this->hasMany(Pembayaran::class);

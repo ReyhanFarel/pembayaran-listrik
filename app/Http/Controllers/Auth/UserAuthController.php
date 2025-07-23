@@ -3,19 +3,36 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\Pelanggan; // Pastikan model Pelanggan sudah ada
+use App\Models\Pelanggan;
 use App\Models\Tarif;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
+/**
+ * Controller untuk mengelola autentikasi user (admin, petugas, pelanggan).
+ *
+ * @package App\Http\Controllers\Auth
+ */
 class UserAuthController extends Controller
 {
+    /**
+     * Tampilkan halaman login.
+     *
+     * @return \Illuminate\View\View
+     */
     public function showLoginForm()
     {
         return view('auth.login');
     }
 
+    /**
+     * Proses login untuk admin, petugas, atau pelanggan.
+     * Menggunakan guard 'web' dan 'pelanggan'.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -26,40 +43,69 @@ class UserAuthController extends Controller
             'password.required' => 'Password wajib diisi.',
         ]);
 
+        // Logout dari semua guard terlebih dahulu
+        if (Auth::guard('web')->check()) {
+            Auth::guard('web')->logout();
+        }
+        if (Auth::guard('pelanggan')->check()) {
+            Auth::guard('pelanggan')->logout();
+        }
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        // Login sebagai admin/petugas
         if (Auth::guard('web')->attempt($credentials)) {
             $request->session()->regenerate();
+            $user = Auth::guard('web')->user()->load('level');
 
-            // --- Lakukan eager loading relasi 'level' di sini ---
-            // Ambil ulang user yang baru saja login, beserta relasi level-nya
-            $user = Auth::guard('web')->user()->load('level'); 
-
-            if ($user->level_id == 1) { // Asumsi level_id 1 untuk Admin
-                return redirect()->intended('/admin/dashboard');
-            } elseif ($user->level_id == 2) { // Asumsi level_id 2 untuk Petugas
-                return redirect()->intended('/petugas/dashboard');
+            if ($user->level_id == 1) {
+                return redirect()->route('admin.dashboard');
+            } elseif ($user->level_id == 2) {
+                return redirect()->route('petugas.dashboard');
             }
-            return redirect()->intended('/admin/dashboard');
+
+            return redirect()->route('admin.dashboard');
         }
 
+        // Login sebagai pelanggan
         if (Auth::guard('pelanggan')->attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('/pelanggan/dashboard');
+            return redirect()->route('pelanggan.dashboard');
         }
 
+        // Gagal login
         return back()->withErrors([
             'username' => 'Username atau password salah.',
         ])->onlyInput('username');
     }
 
-     public function register(Request $request)
+    /**
+     * Tampilkan halaman registrasi untuk pelanggan baru.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function showRegistrationForm()
+    {
+        $tarifs = Tarif::orderBy('daya')->get();
+        return view('auth.register', compact('tarifs'));
+    }
+
+    /**
+     * Proses registrasi pelanggan baru.
+     * Setelah registrasi, pelanggan langsung login.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function register(Request $request)
     {
         $validated = $request->validate([
             'nama_pelanggan' => 'required|string|max:100',
             'username' => ['required', 'string', 'max:100', 'unique:pelanggan,username'],
-            'password' => 'required|string|min:6|confirmed', // 'confirmed' butuh password_confirmation
+            'password' => 'required|string|min:6|confirmed',
             'alamat' => 'required|string|max:200',
             'nomor_kwh' => ['required', 'string', 'max:50', 'unique:pelanggan,nomor_kwh'],
-            'tarif_id' => 'required|exists:tarifs,id', // Pastikan tarif_id ada di tabel 'tarifs'
+            'tarif_id' => 'required|exists:tarifs,id',
         ], [
             'nama_pelanggan.required' => 'Nama lengkap wajib diisi.',
             'username.required' => 'Username wajib diisi.',
@@ -74,22 +120,21 @@ class UserAuthController extends Controller
             'tarif_id.exists' => 'Tarif listrik tidak valid.',
         ]);
 
-        // Hash password sebelum disimpan
         $validated['password'] = Hash::make($validated['password']);
 
-        // Buat pelanggan baru
         $pelanggan = Pelanggan::create($validated);
-
-        // Langsung login sebagai pelanggan yang baru terdaftar
         Auth::guard('pelanggan')->login($pelanggan);
 
-        return redirect()->route('pelanggan.dashboard')->with('success', 'Registrasi berhasil! Selamat datang, ' . $pelanggan->nama_pelanggan);
+        return redirect()->route('pelanggan.dashboard')
+                         ->with('success', 'Registrasi berhasil! Selamat datang, ' . $pelanggan->nama_pelanggan);
     }
-  public function showRegistrationForm()
-    {
-        $tarifs = Tarif::orderBy('daya')->get(); // Ambil semua tarif untuk dropdown
-        return view('auth.register', compact('tarifs'));
-    }
+
+    /**
+     * Logout dari semua guard yang sedang aktif (web/pelanggan).
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function logout(Request $request)
     {
         if (Auth::guard('web')->check()) {

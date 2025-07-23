@@ -13,7 +13,10 @@ use Illuminate\Support\Facades\DB;
 class TagihanController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Tampilkan daftar tagihan.
+     * Hanya Admin dan Petugas yang dapat mengaksesnya.
+     * @return \Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function index()
     {
@@ -28,8 +31,10 @@ class TagihanController extends Controller
     }
 
     /**
-     * Tampilkan halaman untuk membuat tagihan baru dari penggunaan
-     * yang belum memiliki tagihan.
+     * Tampilkan halaman untuk membuat tagihan baru dari penggunaan yang belum memiliki tagihan.
+     * Hanya Admin dan Petugas yang dapat mengaksesnya.
+     * @return \Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function createFromPenggunaan()
     {
@@ -42,7 +47,11 @@ class TagihanController extends Controller
     }
 
     /**
-     * Proses pembuatan tagihan dari penggunaan yang dipilih.
+     * Membuat tagihan baru berdasarkan penggunaan yang dipilih.
+     * Validasi input untuk memastikan penggunaan_ids adalah array dan setiap id ada di tabel penggunaan.
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function generate(Request $request)
     {
@@ -89,16 +98,18 @@ class TagihanController extends Controller
     }
 
 
-    /**
-     * Display the specified resource.
-     */
+   
     public function show(Tagihan $tagihan)
     {
         return redirect()->route(Auth::guard('web')->user()->level_id == 1 ? 'admin.tagihans.index' : 'petugas.tagihans.index');
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Tampilkan formulir untuk mengedit tagihan yang ada.
+     * Hanya Admin dan Petugas yang dapat mengaksesnya.
+     * @param Tagihan $tagihan
+     * @return \Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function edit(Tagihan $tagihan)
     {
@@ -107,7 +118,12 @@ class TagihanController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update Data tagihan yang ada.
+     * Validasi input untuk memastikan status_tagihan adalah 'Belum Dibayar' atau 'Sudah Dibayar'.
+     * @param \Illuminate\Http\Request $request
+     * @param Tagihan $tagihan
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(Request $request, Tagihan $tagihan)
     {
@@ -124,7 +140,11 @@ class TagihanController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Hapus tagihan yang ada.
+     * Hanya Admin dan Petugas yang dapat mengaksesnya.
+     * @param Tagihan $tagihan
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function destroy(Tagihan $tagihan)
     {

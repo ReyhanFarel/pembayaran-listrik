@@ -11,7 +11,10 @@ use Illuminate\Support\Facades\Auth; // Untuk otorisasi
 class UserController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Tampilkan daftar user.
+     * Hanya Admin yang dapat mengakses fitur ini.
+     * @return \Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function index()
     {
@@ -24,7 +27,10 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Tampilkan formulir untuk membuat user baru.
+     * Hanya Admin yang dapat mengakses fitur ini.
+     * @return \Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function create()
     {
@@ -34,7 +40,12 @@ class UserController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Simpan user baru ke database.
+     * Validasi input dan pastikan username unik di tabel 'users'.
+     * Pastikan level_id ada di tabel 'level'.
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function store(Request $request)
     {
@@ -60,9 +71,7 @@ class UserController extends Controller
         return redirect()->route('admin.users.index')->with('success', 'User berhasil ditambahkan!');
     }
 
-    /**
-     * Display the specified resource.
-     */
+ 
     public function show(User $user)
     {
         // Biasanya tidak diperlukan view show terpisah
@@ -70,7 +79,11 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Tampilkan halaman untuk mengedit user yang ada.
+     * Hanya Admin yang dapat mengakses fitur ini.
+     * @param User $user
+     * @return \Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function edit(User $user)
     {
@@ -80,7 +93,13 @@ class UserController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update Data user yang ada.
+     * Validasi input untuk memastikan username unik di tabel 'users' kecuali untuk dirinya sendiri.
+     * Pastikan level_id ada di tabel 'level'.
+     * @param \Illuminate\Http\Request $request
+     * @param User $user
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(Request $request, User $user)
     {
@@ -116,7 +135,12 @@ class UserController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Hapus user yang ada.
+     * Mencegah Admin menghapus Admin lain jika hanya ada satu Admin tersisa.
+     * Mencegah Admin menghapus dirinya sendiri.
+     * @param User $user
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
    public function destroy(User $user)
 {

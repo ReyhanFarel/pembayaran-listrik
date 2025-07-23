@@ -36,11 +36,34 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Tagihan whereUpdatedAt($value)
  * @mixin \Eloquent
  */
+/**
+ * Model Tagihan
+ *
+ * Model ini merepresentasikan tabel 'tagihan' yang menyimpan data tagihan listrik.
+ * Relasi:
+ * - Penggunaan: Setiap tagihan terkait dengan satu penggunaan.
+ * - Pelanggan: Setiap tagihan terkait dengan satu pelanggan.
+ * - Pembayaran: Setiap tagihan dapat memiliki satu pembayaran.
+ */
 class Tagihan extends Model
 {
     use HasFactory;
 
+    /** 
+     * Nama tabel yang digunakan oleh model ini.
+     * Diperlukan jika nama tabel tidak sesuai dengan konvensi Laravel.
+     *
+     * @var string
+     */
     protected $table = 'tagihan';
+
+
+    /**
+     * Atribut yang dapat diisi secara massal.
+     * Ini digunakan untuk menghindari mass assignment vulnerability.
+     *
+     * @var array
+     */
     protected $fillable = [
         'penggunaan_id',
         'pelanggan_id',
@@ -55,28 +78,59 @@ class Tagihan extends Model
     //     'jumlah_bayar' => 'decimal:2',
     // ];
 
+    /**
+     * Relasi ke Penggunaan
+     * Setiap tagihan terkait dengan satu penggunaan.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function penggunaan()
     {
         return $this->belongsTo(Penggunaan::class);
     }
 
+    /**
+     * Relasi ke Pelanggan
+     * Setiap tagihan terkait dengan satu pelanggan.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function pelanggan()
     {
         return $this->belongsTo(Pelanggan::class);
     }
 
-    // Relasi ke Pembayaran (penting untuk fitur ini)
+    /**
+     * Relasi ke Pembayaran
+     * Setiap tagihan dapat memiliki satu pembayaran.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function pembayaran()
     {
         return $this->hasOne(Pembayaran::class);
     }
 
     // Accessor untuk mendapatkan objek Tarif melalui relasi pelanggan
+
+    /**
+     * Accessor untuk mendapatkan data tarif dari relasi pelanggan.
+     * Ini akan mengembalikan tarif yang terkait dengan pelanggan yang memiliki tagihan ini.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection|null
+     */
     public function getTarifDataAttribute()
     {
-        return optional($this->pelanggan)->tarif;
+        return optional($this->pelanggan)->tarifs;
     }
 
+
+    /**
+     * Accessor untuk menghitung total tagihan berdasarkan jumlah meter dan tarif per kWh.
+     * Ini akan mengembalikan total tagihan yang dihitung secara dinamis.
+     *
+     * @return float
+     */
     // Accessor untuk menghitung total tagihan secara dinamis
     public function getTotalTagihanAttribute()
     {

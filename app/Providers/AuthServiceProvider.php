@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Gate;
 class AuthServiceProvider extends ServiceProvider
 {
     /**
-     * The model to policy mappings for the application.
+     * Policies Untuk model yang digunakan dalam aplikasi.
      *
      * @var array<class-string, class-string>
      */
@@ -17,7 +17,9 @@ class AuthServiceProvider extends ServiceProvider
     ];
 
     /**
-     * Register any authentication / authorization services.
+     * Untuk mendaftarkan kebijakan otorisasi dan gate.
+     * Anda dapat mendefinisikan gate di sini untuk mengontrol akses ke berbagai bagian aplikasi.
+     * Misalnya, Anda dapat membuat gate untuk memeriksa apakah pengguna adalah Admin atau Pelanggan.
      */
     public function boot(): void
     {
