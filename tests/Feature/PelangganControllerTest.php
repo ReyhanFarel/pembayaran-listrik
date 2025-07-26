@@ -75,7 +75,7 @@ class PelangganControllerTest extends TestCase
         $response = $this->get(route('admin.pelanggans.create')); // Petugas mencoba mengakses rute Admin
         $response->assertRedirect(route('login')); // Ekspektasi redirect ke login
     }
-// STORE (KOREKSI DI SINI: Pastikan username dan nomor_kwh unik untuk test)
+    // STORE (KOREKSI DI SINI: Pastikan username dan nomor_kwh unik untuk test)
     public function test_admin_can_store_pelanggan()
     {
         $this->loginAsAdmin();
@@ -84,11 +84,11 @@ class PelangganControllerTest extends TestCase
         // Data yang akan dikirim untuk membuat pelanggan baru
         $pelangganData = [
             'tarif_id' => $tarif->id,
-            'nama_pelanggan' => 'Aryo Tes',
-            'username' => 'aryo123' . uniqid(), // Pastikan username unik untuk test
+            'nama_pelanggan' => 'Lumi Tes',
+            'username' => 'lumi123' . uniqid(),
             'password' => 'password123',
             'alamat' => 'Jl. Laravel',
-            'nomor_kwh' => '1234567890' . uniqid(), // Pastikan nomor_kwh unik untuk test
+            'nomor_kwh' => '1234567890' . uniqid(),
         ];
 
         $response = $this->post(route('admin.pelanggans.store'), $pelangganData);
@@ -96,13 +96,13 @@ class PelangganControllerTest extends TestCase
         $response->assertRedirect(route('admin.pelanggans.index'));
         $this->assertDatabaseHas('pelanggan', [
             // KOREKSI DI SINI: Langsung gunakan $pelangganData['username']
-            'username' => $pelangganData['username'], 
+            'username' => $pelangganData['username'],
             'alamat' => 'Jl. Laravel',
             'nama_pelanggan' => 'Aryo Tes', // Tambahkan untuk memastikan data lengkap
             'nomor_kwh' => $pelangganData['nomor_kwh'], // Tambahkan untuk memastikan data lengkap
         ]);
     }
-    
+
     // Admin dapat mengedit dan mengupdate pelanggan
     public function test_admin_can_edit_and_update_pelanggan()
     {

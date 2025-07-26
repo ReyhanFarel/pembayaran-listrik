@@ -8,9 +8,9 @@
     @vite('resources/css/app.css')
 </head>
 
-<body class="bg-sky-100 flex items-center justify-center min-h-screen">
+<body class="bg-white flex items-center justify-center min-h-screen">
     <div
-        class="group bg-white border-2 border-black rounded-xl shadow-[8px_8px_0_0_#0ea5e9] max-w-sm w-full p-8 relative transition-all duration-200
+        class="group bg-white border-2 border-black rounded-xl  max-w-sm w-full p-8 relative transition-all duration-200
         hover:shadow-[12px_12px_0_0_#0ea5e9] hover:border-sky-400">
         <span class="absolute top-4 left-4 w-6 h-6 bg-sky-300 border-2 border-black rounded-lg"></span>
         <span class="absolute bottom-4 right-4 w-4 h-4 bg-yellow-300 border-2 border-black rounded"></span>

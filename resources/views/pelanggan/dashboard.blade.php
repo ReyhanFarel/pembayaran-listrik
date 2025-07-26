@@ -30,7 +30,7 @@
                 class="bg-blue-600 text-white p-6 rounded-none border-4 border-neutral-900 neo-brutal-button-shadow flex flex-col items-start justify-between h-52 relative overflow-hidden">
                 <div class="text-xl font-bold uppercase mb-2">Tagihan Terakhir</div>
                 @if ($lastUnpaidTagihan)
-                    <div class="text-4xl font-black mb-1">Rp
+                    <div class="text-2xl font-black mb-1">Rp
                         {{ number_format($lastUnpaidTagihan->total_tagihan, 2, ',', '.') }}</div>
                     <div class="text-base font-semibold mb-1">Bulan {{ $lastUnpaidTagihan->bulan }}
                         {{ $lastUnpaidTagihan->tahun }}</div>
@@ -41,12 +41,6 @@
                     <div class="text-4xl font-black">Tidak Ada</div>
                     <div class="text-lg font-bold mt-auto">Tagihan Belum Lunas</div>
                 @endif
-                <svg class="w-16 h-16 opacity-75 text-white absolute bottom-4 right-4" fill="none" stroke="currentColor"
-                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                    </path>
-                </svg>
             </div>
 
             {{-- Card Penggunaan Terakhir --}}
@@ -54,7 +48,7 @@
                 class="bg-green-600 text-white p-6 rounded-none border-4 border-neutral-900 neo-brutal-button-shadow flex flex-col items-start justify-between h-52 relative overflow-hidden">
                 <div class="text-xl font-bold uppercase mb-2">Penggunaan Terakhir</div>
                 @if ($lastPenggunaan)
-                    <div class="text-4xl font-black mb-1">{{ number_format($lastPenggunaan->jumlah_meter, 0, ',', '.') }}
+                    <div class="text-2xl font-black mb-1">{{ number_format($lastPenggunaan->jumlah_meter, 0, ',', '.') }}
                         KWH</div>
                     <div class="text-base font-semibold mb-1">Bulan {{ $lastPenggunaan->bulan }}
                         {{ $lastPenggunaan->tahun }}</div>
@@ -63,29 +57,18 @@
                     <div class="text-sm">Meter Akhir: <span
                             class="font-bold">{{ number_format($lastPenggunaan->meter_akhir, 0, ',', '.') }}</span></div>
                 @else
-                    <div class="text-4xl font-black">Belum Ada</div>
+                    <div class="text-2xl font-black">Belum Ada</div>
                     <div class="text-lg font-bold mt-auto">Data Penggunaan</div>
                 @endif
-                <svg class="w-16 h-16 opacity-75 text-white absolute bottom-4 right-4" fill="none" stroke="currentColor"
-                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z">
-                    </path>
-                </svg>
             </div>
 
             {{-- Card Info Daya/KWH --}}
             <div
                 class="bg-purple-600 text-white p-6 rounded-none border-4 border-neutral-900 neo-brutal-button-shadow flex flex-col items-start justify-between h-52 relative overflow-hidden">
                 <div class="text-xl font-bold uppercase mb-2">Info Sambungan</div>
-                <div class="text-4xl font-black mb-1">No. KWH: {{ $pelanggan->nomor_kwh }}</div>
+                <div class="text-xl font-black mb-1">No. KWH: {{ $pelanggan->nomor_kwh }}</div>
                 <div class="text-xl font-bold mt-auto">Daya Terpasang: {{ optional($pelanggan->tarifs)->daya ?? 'N/A' }} VA
                 </div>
-                <svg class="w-16 h-16 opacity-75 text-white absolute bottom-4 right-4" fill="none" stroke="currentColor"
-                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z">
-                    </path>
-                </svg>
             </div>
         </div>
 

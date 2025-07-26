@@ -228,7 +228,6 @@
 
 ## **Referensi & Sumber**
 
--   [Kode lengkap controller di repo Anda](https://github.com/Aryo1235/laravel-pembayaran-listrik/tree/main/app/Http/Controllers)
 -   [Laravel Resource Controller Docs](https://laravel.com/docs/10.x/controllers#resource-controllers)
 -   [Midtrans Docs](https://docs.midtrans.com/)
 

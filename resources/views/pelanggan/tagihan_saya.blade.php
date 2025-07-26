@@ -32,10 +32,6 @@
         <form method="GET" class="mb-6 flex gap-4 flex-wrap items-center">
             <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari Bulan/Tahun"
                 class="appearance-none border-2 border-neutral-900 neo-brutal-input-shadow py-3 px-4 text-neutral-900 leading-tight focus:border-sky-500 bg-white flex-grow sm:flex-grow-0">
-            <select name="sort"
-                class="appearance-none border-2 border-neutral-900 neo-brutal-input-shadow py-3 px-4 text-neutral-900 leading-tight focus:border-sky-500 bg-white">
-                <option value="tahun" {{ request('sort') == 'tahun' ? 'selected' : '' }}>Tahun</option>
-            </select>
             <select name="direction"
                 class="appearance-none border-2 border-neutral-900 neo-brutal-input-shadow py-3 px-4 text-neutral-900 leading-tight focus:border-sky-500 bg-white">
                 <option value="desc" {{ request('direction') == 'desc' ? 'selected' : '' }}>Terbaru</option>

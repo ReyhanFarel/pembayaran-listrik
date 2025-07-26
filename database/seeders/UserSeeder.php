@@ -18,7 +18,7 @@ class UserSeeder extends Seeder
         User::firstOrCreate(
             ['username' => 'admin'],
             [
-                
+
                 'nama_user' => 'Administrator Utama',
                 'password' => Hash::make('password'), // Ganti dengan password yang kuat!
                 'level_id' => $adminLevel->id,
